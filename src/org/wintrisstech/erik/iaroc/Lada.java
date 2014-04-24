@@ -4,9 +4,12 @@ import ioio.lib.api.IOIO;
 import ioio.lib.api.exception.ConnectionLostException;
 import org.wintrisstech.sensors.UltraSonicSensors;
 
+import android.os.SystemClock;
+
 /**
  * A Lada is an implementation of the IRobotCreateInterface, inspired by Vic's
  * awesome API. It is entirely event driven. Version 140412A...mods by Vic
+ * 
  * @author Erik
  */
 public class Lada extends IRobotCreateAdapter {
@@ -16,10 +19,14 @@ public class Lada extends IRobotCreateAdapter {
 
 	/**
 	 * Constructs a Lada, an amazing machine!
-	 * @param ioio the IOIO instance that the Lada can use to communicate with
-	 * other peripherals such as sensors
-	 * @param create an implementation of an iRobot
-	 * @param dashboard the Dashboard instance that is connected to the Lada
+	 * 
+	 * @param ioio
+	 *            the IOIO instance that the Lada can use to communicate with
+	 *            other peripherals such as sensors
+	 * @param create
+	 *            an implementation of an iRobot
+	 * @param dashboard
+	 *            the Dashboard instance that is connected to the Lada
 	 * @throws ConnectionLostException
 	 */
 	public Lada(IOIO ioio, IRobotCreateInterface create, Dashboard dashboard)
@@ -40,18 +47,16 @@ public class Lada extends IRobotCreateAdapter {
 
 	/**
 	 * This method is called repeatedly
+	 * 
 	 * @throws ConnectionLostException
+	 * @throws InterruptedException
 	 */
-	public void loop() throws ConnectionLostException {
-		try {
-			sonar.read();
-		} catch (InterruptedException ex) {
-		}
-		int lDistance = (int) sonar.getLeftDistance();
-		if (lDistance != 0) {
-			dashboard.log("L: " + lDistance);
+	public void loop() throws ConnectionLostException, InterruptedException {
+		sonar.read();
+		if (sonar.getFrontDistance() < 20) {
+			driveDirect(-100, -100);
 		} else {
-			dashboard.log("......");
+			driveDirect(100, 100);
 		}
 	}
 }

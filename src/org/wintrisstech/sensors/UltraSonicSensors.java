@@ -18,7 +18,7 @@ import ioio.lib.api.exception.ConnectionLostException;
  */
 public class UltraSonicSensors {
 	private static final float CONVERSION_FACTOR = 17280.0F; // cm / s
-	private static final int NUM_SAMPLES = 1;
+	private static final int NUM_SAMPLES = 4;
 	private static final int LEFT_ULTRASONIC_INPUT_PIN = 35;
 	private static final int FRONT_ULTRASONIC_INPUT_PIN = 36;
 	private static final int RIGHT_ULTRASONIC_INPUT_PIN = 37;
@@ -31,7 +31,7 @@ public class UltraSonicSensors {
 	private DigitalOutput leftStrobe;
 	private DigitalOutput frontStrobe;
 	private DigitalOutput righttStrobe;
-	private float leftDistance;
+	private volatile int leftDistance;
 	private volatile int frontDistance = 10;
 	private volatile int rightDistance;
 	private IOIO ioio;
@@ -39,7 +39,9 @@ public class UltraSonicSensors {
 
 	/**
 	 * Constructor of a UltraSonicSensors instance.
-	 * @param ioio the IOIO instance used to communicate with the sensor
+	 * 
+	 * @param ioio
+	 *            the IOIO instance used to communicate with the sensor
 	 * @throws ConnectionLostException
 	 */
 	public UltraSonicSensors(IOIO ioio, Dashboard dashboard)
@@ -64,27 +66,35 @@ public class UltraSonicSensors {
 	 * Makes a reading of the ultrasonic sensors and stores the results locally.
 	 * To access these readings, use {@link #getLeftDistance()},
 	 * {@link #getFrontDistance()}, and {@link #getRightDistance()}.
+	 * 
 	 * @throws ConnectionLostException
 	 * @throws InterruptedException
 	 */
 	public void read() throws ConnectionLostException, InterruptedException {
-		read(leftStrobe, leftInput);
-		// frontDistance = read(frontStrobe, frontInput);
-		// rightDistance = read(righttStrobe, rightInput);
+		leftDistance = read(leftStrobe, leftInput);
+		frontDistance = read(frontStrobe, frontInput);
+		rightDistance = read(righttStrobe, rightInput);
+
 	}
 
-	private float read(DigitalOutput strobe, PulseInput input)
+	private int read(DigitalOutput strobe, PulseInput input)
 			throws ConnectionLostException, InterruptedException {
-		leftDistance = 0;
-		for (int i = 0; i < NUM_SAMPLES; i++) {
-			ioio.beginBatch(); // Start batching to prevent elongating strobe pulse
+		int distance = 0;
+		int tempDistance = 0;
+		for (int i = 0; i < NUM_SAMPLES;) {
+			ioio.beginBatch(); // Start batching to prevent elongating strobe
+								// pulse
 			strobe.write(true);
 			strobe.write(false);
 			ioio.endBatch();
-			leftDistance +=  (input.getDuration() * CONVERSION_FACTOR);
-			SystemClock.sleep(100);
+			tempDistance += (input.getDuration() * CONVERSION_FACTOR);
+			if (tempDistance > 0) {
+				distance += tempDistance;
+				i++;
+			}
+			SystemClock.sleep(10);
 		}
-		return leftDistance / NUM_SAMPLES;
+		return distance / NUM_SAMPLES;
 	}
 
 	/**
