@@ -4,6 +4,8 @@ import ioio.lib.api.IOIO;
 import ioio.lib.api.exception.ConnectionLostException;
 import org.wintrisstech.sensors.UltraSonicSensors;
 
+import android.os.SystemClock;
+
 /**
  * A Lada is an implementation of the IRobotCreateInterface, inspired by Vic's
  * awesome API. It is entirely event driven.
@@ -46,11 +48,11 @@ public class Lada extends IRobotCreateAdapter {
      * @throws ConnectionLostException
      */
     public void loop() throws ConnectionLostException {
-    	driveDirect(100,  100);
-//        try {
-//            //sonar.read();
-//        } catch (InterruptedException ex) {
-//        }
-        //dashboard.log("L: " + sonar.getLeftDistance() + " F: " + sonar.getFrontDistance() + " R: " + sonar.getRightDistance());
+        try {
+            sonar.read();
+        } catch (InterruptedException ex) {
+        }
+        dashboard.log("L: " + sonar.getLeftDistance() + " F: " + sonar.getFrontDistance() + " R: " + sonar.getRightDistance());
+        SystemClock.sleep(100);
     }
 }
