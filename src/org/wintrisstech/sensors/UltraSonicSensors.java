@@ -1,20 +1,24 @@
 package org.wintrisstech.sensors;
 
-import android.os.SystemClock;
+/**************************************************************************
+ * Happy version...ultrasonics working
+ **************************************************************************/
 import ioio.lib.api.DigitalOutput;
 import ioio.lib.api.IOIO;
 import ioio.lib.api.PulseInput;
 import ioio.lib.api.PulseInput.PulseMode;
 import ioio.lib.api.exception.ConnectionLostException;
+import android.os.SystemClock;
 
 /**
  * An UltraSonicSensors instance is used to access three ultrasonic sensors
  * (leftInput, frontInput, and rightInput) and read the measurements from these
- * sensors.
- * version 140427...modified by Vic...ultrasonics works using Ytai's suggestions
+ * sensors. version 140427...modified by Vic...ultrasonics works using Ytai's
+ * suggestions...cleaned up formatting
  * @author Erik Colban
  */
-public class UltraSonicSensors {
+public class UltraSonicSensors
+{
 	private static final float CONVERSION_FACTOR = 17280.0F; // cm / s
 	private static int LEFT_ULTRASONIC_INPUT_PIN = 35;
 	private static int FRONT_ULTRASONIC_INPUT_PIN = 36;
@@ -29,24 +33,21 @@ public class UltraSonicSensors {
 	private DigitalOutput frontStrobe;
 	private DigitalOutput righttStrobe;
 	private volatile int leftDistance;
-	private volatile int frontDistance = 10;
+	private volatile int frontDistance;
 	private volatile int rightDistance;
 	private IOIO ioio;
 
 	/**
 	 * Constructor of a UltraSonicSensors instance.
-	 * @param ioio
-	 *            the IOIO instance used to communicate with the sensor
+	 * @param ioio the IOIO instance used to communicate with the sensor
 	 * @throws ConnectionLostException
 	 */
-	public UltraSonicSensors(IOIO ioio) throws ConnectionLostException {
+	public UltraSonicSensors(IOIO ioio) throws ConnectionLostException
+	{
 		this.ioio = ioio;
-		this.leftStrobe = ioio
-				.openDigitalOutput(LEFT_STROBE_ULTRASONIC_OUTPUT_PIN);// *******
-		this.righttStrobe = ioio
-				.openDigitalOutput(RIGHT_STROBE_ULTRASONIC_OUTPUT_PIN);// *******
-		this.frontStrobe = ioio
-				.openDigitalOutput(FRONT_STROBE_ULTRASONIC_OUTPUT_PIN);// *******
+		this.leftStrobe = ioio.openDigitalOutput(LEFT_STROBE_ULTRASONIC_OUTPUT_PIN);// *******
+		this.righttStrobe = ioio.openDigitalOutput(RIGHT_STROBE_ULTRASONIC_OUTPUT_PIN);// *******
+		this.frontStrobe = ioio.openDigitalOutput(FRONT_STROBE_ULTRASONIC_OUTPUT_PIN);// *******
 	}
 
 	/**
@@ -56,16 +57,15 @@ public class UltraSonicSensors {
 	 * @throws ConnectionLostException
 	 * @throws InterruptedException
 	 */
-	public void read() throws ConnectionLostException, InterruptedException {
+	public void read() throws ConnectionLostException, InterruptedException
+	{
 		leftDistance = read(leftStrobe, leftInput, LEFT_ULTRASONIC_INPUT_PIN);
-		frontDistance = read(frontStrobe, frontInput,
-				FRONT_ULTRASONIC_INPUT_PIN);
-		rightDistance = read(righttStrobe, rightInput,
-				RIGHT_ULTRASONIC_INPUT_PIN);
+		frontDistance = read(frontStrobe, frontInput, FRONT_ULTRASONIC_INPUT_PIN);
+		rightDistance = read(righttStrobe, rightInput, RIGHT_ULTRASONIC_INPUT_PIN);
 	}
 
-	private int read(DigitalOutput strobe, PulseInput input, int inputPin)
-			throws ConnectionLostException, InterruptedException {
+	private int read(DigitalOutput strobe, PulseInput input, int inputPin) throws ConnectionLostException, InterruptedException
+	{
 		int distance = 0;
 		ioio.beginBatch();
 		strobe.write(true);
@@ -78,34 +78,23 @@ public class UltraSonicSensors {
 		return distance;
 	}
 
-	/**
-	 * Gets the last read distance in cm of the leftInput sensor
-	 * @return the leftInput distance in cm
-	 */
-	public synchronized int getLeftDistance() {
+	public synchronized int getLeftDistance()
+	{
 		return leftDistance;
 	}
 
-	/**
-	 * Gets the last read distance in cm of the frontInput sensor
-	 * @return the frontInput distance in cm
-	 */
-	public synchronized int getFrontDistance() {
+	public synchronized int getFrontDistance()
+	{
 		return frontDistance;
 	}
 
-	/**
-	 * Gets the last read distance in cm of the rightInput sensor
-	 * @return the rightInput distance in cm
-	 */
-	public synchronized int getRightDistance() {
+	public synchronized int getRightDistance()
+	{
 		return rightDistance;
 	}
 
-	/**
-	 * Closes all the connections to the used pins
-	 */
-	public void closeConnection() {
+	public void closeConnection()
+	{
 		leftInput.close();
 		frontInput.close();
 		rightInput.close();
