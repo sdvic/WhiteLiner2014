@@ -11,12 +11,10 @@ import ioio.lib.api.exception.ConnectionLostException;
  * An UltraSonicSensors instance is used to access three ultrasonic sensors
  * (leftInput, frontInput, and rightInput) and read the measurements from these
  * sensors.
- * 
+ * version 140427...modified by Vic...ultrasonics works using Ytai's suggestions
  * @author Erik Colban
  */
 public class UltraSonicSensors {
-
-	private static final String TAG = "UltraSonicSensor";
 	private static final float CONVERSION_FACTOR = 17280.0F; // cm / s
 	private static int LEFT_ULTRASONIC_INPUT_PIN = 35;
 	private static int FRONT_ULTRASONIC_INPUT_PIN = 36;
@@ -37,11 +35,9 @@ public class UltraSonicSensors {
 
 	/**
 	 * Constructor of a UltraSonicSensors instance.
-	 * 
 	 * @param ioio
 	 *            the IOIO instance used to communicate with the sensor
 	 * @throws ConnectionLostException
-	 * 
 	 */
 	public UltraSonicSensors(IOIO ioio) throws ConnectionLostException {
 		this.ioio = ioio;
@@ -52,18 +48,20 @@ public class UltraSonicSensors {
 		this.frontStrobe = ioio
 				.openDigitalOutput(FRONT_STROBE_ULTRASONIC_OUTPUT_PIN);// *******
 	}
+
 	/**
 	 * Makes a reading of the ultrasonic sensors and stores the results locally.
 	 * To access these readings, use {@link #getLeftDistance()},
 	 * {@link #getFrontDistance()}, and {@link #getRightDistance()}.
-	 * 
 	 * @throws ConnectionLostException
 	 * @throws InterruptedException
 	 */
 	public void read() throws ConnectionLostException, InterruptedException {
 		leftDistance = read(leftStrobe, leftInput, LEFT_ULTRASONIC_INPUT_PIN);
-		// frontDistance = read(frontStrobe, frontInput, FRONT_ULTRASONIC_INPUT_PIN );
-		rightDistance = read(righttStrobe, rightInput, RIGHT_ULTRASONIC_INPUT_PIN);
+		frontDistance = read(frontStrobe, frontInput,
+				FRONT_ULTRASONIC_INPUT_PIN);
+		rightDistance = read(righttStrobe, rightInput,
+				RIGHT_ULTRASONIC_INPUT_PIN);
 	}
 
 	private int read(DigitalOutput strobe, PulseInput input, int inputPin)
@@ -82,7 +80,6 @@ public class UltraSonicSensors {
 
 	/**
 	 * Gets the last read distance in cm of the leftInput sensor
-	 * 
 	 * @return the leftInput distance in cm
 	 */
 	public synchronized int getLeftDistance() {
@@ -91,7 +88,6 @@ public class UltraSonicSensors {
 
 	/**
 	 * Gets the last read distance in cm of the frontInput sensor
-	 * 
 	 * @return the frontInput distance in cm
 	 */
 	public synchronized int getFrontDistance() {
@@ -100,7 +96,6 @@ public class UltraSonicSensors {
 
 	/**
 	 * Gets the last read distance in cm of the rightInput sensor
-	 * 
 	 * @return the rightInput distance in cm
 	 */
 	public synchronized int getRightDistance() {
