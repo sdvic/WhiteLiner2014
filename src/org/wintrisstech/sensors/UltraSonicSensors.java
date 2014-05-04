@@ -2,6 +2,7 @@ package org.wintrisstech.sensors;
 
 /**************************************************************************
  * Happy version...ultrasonics working ... with changes proposed by Ytai.
+ * version140503A with help from Erik
  **************************************************************************/
 import ioio.lib.api.DigitalOutput;
 import ioio.lib.api.IOIO;
@@ -63,7 +64,7 @@ public class UltraSonicSensors
 
 	private int read(DigitalOutput strobe, int inputPin) throws ConnectionLostException, InterruptedException
 	{
-		ioio.beginBatch();
+		ioio.beginBatch();//order of statements critical...do not change
 		strobe.write(true);
 		PulseInput input = ioio.openPulseInput(inputPin, PulseMode.POSITIVE);
 		ioio.endBatch();
