@@ -1,8 +1,8 @@
 package org.wintrisstech.erik.iaroc;
 
 /**************************************************************************
- * Happy version...ultrasonics working...Version 140503B...mods by Vic
- * Added compass class...untested
+ * Happy version...ultrasonics working...Version 140505A...mods by Vic
+ * Added compass class...works
  **************************************************************************/
 import ioio.lib.api.IOIO;
 import ioio.lib.api.exception.ConnectionLostException;
@@ -49,29 +49,30 @@ public class Lada extends IRobotCreateAdapter
 	 */
 	public void loop() throws ConnectionLostException
 	{
-		try
-		{
-			sonar.read();
-		} catch (InterruptedException ex)
-		{
-		}
-		dashboard.log("L: " + sonar.getLeftDistance() + " F: " + sonar.getFrontDistance() + " R: " + sonar.getRightDistance());
+		dashboard.log(dashboard.getAzimuth() + "");
+//		try
+//		{
+//			//sonar.read();
+//		} catch (InterruptedException ex)
+//		{
+//		}
+		//dashboard.log("L: " + sonar.getLeftDistance() + " F: " + sonar.getFrontDistance() + " R: " + sonar.getRightDistance());
 		SystemClock.sleep(100);
-		if (sonar.getLeftDistance() < 20)
-		{
-			driveDirect(0, 100);
-			SystemClock.sleep(1000);
-		}
-		if (sonar.getRightDistance() < 20)
-		{
-			driveDirect(100, 0);
-			SystemClock.sleep(1000);
-		}
-		if (sonar.getFrontDistance() < 20)
-		{
-			driveDirect(-500, -500);
-			SystemClock.sleep(1000);
-		}
+//		if (sonar.getLeftDistance() < 20)
+//		{
+//			driveDirect(0, 100);
+//			SystemClock.sleep(1000);
+//		}
+//		if (sonar.getRightDistance() < 20)
+//		{
+//			driveDirect(100, 0);
+//			SystemClock.sleep(1000);
+//		}
+//		if (sonar.getFrontDistance() < 20)
+//		{
+//			driveDirect(-500, -500);
+//			SystemClock.sleep(1000);
+//		}
 
 		driveDirect(0, 0);
 	}

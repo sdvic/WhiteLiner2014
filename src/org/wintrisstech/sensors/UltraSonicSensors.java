@@ -2,7 +2,7 @@ package org.wintrisstech.sensors;
 
 /**************************************************************************
  * Happy version...ultrasonics working ... with changes proposed by Ytai.
- * version140503A with help from Erik
+ * version140505A and compass with help from Erik
  **************************************************************************/
 import ioio.lib.api.DigitalOutput;
 import ioio.lib.api.IOIO;
