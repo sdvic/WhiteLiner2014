@@ -2,7 +2,7 @@ package org.wintrisstech.sensors;
 
 /**************************************************************************
  * Happy version...ultrasonics working ... with changes proposed by Ytai.
- * version140505A and compass with help from Erik
+ * version140509A and compass with help from Erik
  **************************************************************************/
 import ioio.lib.api.DigitalOutput;
 import ioio.lib.api.IOIO;
@@ -20,7 +20,7 @@ import android.os.SystemClock;
  */
 public class UltraSonicSensors
 {
-	private static final float CONVERSION_FACTOR = 17280.0F; // cm / s
+	private static final float CONVERSION_FACTOR = 17280.0F; // cm/s
 	private static int LEFT_ULTRASONIC_INPUT_PIN = 35;
 	private static int FRONT_ULTRASONIC_INPUT_PIN = 36;
 	private static int RIGHT_ULTRASONIC_INPUT_PIN = 37;
@@ -43,9 +43,9 @@ public class UltraSonicSensors
 	public UltraSonicSensors(IOIO ioio) throws ConnectionLostException
 	{
 		this.ioio = ioio;
-		this.leftStrobe = ioio.openDigitalOutput(LEFT_STROBE_ULTRASONIC_OUTPUT_PIN);// *******
-		this.rightStrobe = ioio.openDigitalOutput(RIGHT_STROBE_ULTRASONIC_OUTPUT_PIN);// *******
-		this.frontStrobe = ioio.openDigitalOutput(FRONT_STROBE_ULTRASONIC_OUTPUT_PIN);// *******
+		this.leftStrobe = ioio.openDigitalOutput(LEFT_STROBE_ULTRASONIC_OUTPUT_PIN);
+		this.rightStrobe = ioio.openDigitalOutput(RIGHT_STROBE_ULTRASONIC_OUTPUT_PIN);
+		this.frontStrobe = ioio.openDigitalOutput(FRONT_STROBE_ULTRASONIC_OUTPUT_PIN);
 	}
 
 	/**

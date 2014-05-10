@@ -21,7 +21,6 @@ import ioio.lib.api.exception.ConnectionLostException;
  */
 public final class SimpleIRobotCreate implements IRobotCreateInterface {
 
-    private static final String TAG = "SimpleIRobotCreate";
 //    @deprecated use COMMAND_MODE_SAFE instead.
 //    private static final int COMMAND_MODE_CONTROL = 130;
     /**
@@ -230,7 +229,6 @@ public final class SimpleIRobotCreate implements IRobotCreateInterface {
     private static final int DIGITAL_OUTPUT_PIN0 = 1;
     private static final int DIGITAL_OUTPUT_PIN1 = 2;
     private static final int DIGITAL_OUTPUT_PIN2 = 4;
-    private static final int OI_MODE_PASSIVE = 1;
     //Indices to an array containing the sensor values.
     private static final int SENSORID_advanceButton = 0;
     private static final int SENSORID_angle = 1;
