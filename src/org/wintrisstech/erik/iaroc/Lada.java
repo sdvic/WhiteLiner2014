@@ -6,7 +6,11 @@ package org.wintrisstech.erik.iaroc;
  **************************************************************************/
 import ioio.lib.api.IOIO;
 import ioio.lib.api.exception.ConnectionLostException;
+import ioioirobot.ecolban.org.wintrisstech.IRobotCreateAdapter;
+import ioioirobot.ecolban.org.wintrisstech.IRobotCreateInterface;
+
 import org.wintrisstech.sensors.UltraSonicSensors;
+
 import android.os.SystemClock;
 
 /**
@@ -51,8 +55,9 @@ public class Lada extends IRobotCreateAdapter {
 	 * @throws ConnectionLostException
 	 */
 	public void loop() throws ConnectionLostException {
-		turn(90);
+		
 		SystemClock.sleep(100);
+		dashboard.log(String.valueOf(readCompass()));
 	}
 
 	public void turn(int commandAngle) throws ConnectionLostException //Doesn't work for turns through 360

@@ -7,6 +7,8 @@ import ioio.lib.api.IOIO;
 import ioio.lib.api.exception.ConnectionLostException;
 import ioio.lib.util.IOIOLooper;
 import ioio.lib.util.android.IOIOActivity;
+import ioioirobot.ecolban.org.wintrisstech.IRobotCreateInterface;
+import ioioirobot.ecolban.org.wintrisstech.SimpleIRobotCreate;
 
 import java.util.Locale;
 
