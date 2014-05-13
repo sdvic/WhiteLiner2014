@@ -1,7 +1,6 @@
 package org.wintrisstech.erik.iaroc;
 /**************************************************************************
- * Happy version...ultrasonics working...Version 140505A...mods by Vic
- * Added compass class from Erik...works
+ * Simplified version 140512A by Erik  Super Happy Version
  **************************************************************************/
 import ioio.lib.api.IOIO;
 import ioio.lib.api.exception.ConnectionLostException;

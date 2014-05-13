@@ -1,8 +1,7 @@
 package org.wintrisstech.sensors;
 
 /**************************************************************************
- * Happy version...ultrasonics working ... with changes proposed by Ytai.
- * version140511A and compass with help from Erik updated adt Bundle to 20140321
+ * Simplified version 140512A by Erik  Super Happy Version
  **************************************************************************/
 import ioio.lib.api.DigitalOutput;
 import ioio.lib.api.IOIO;

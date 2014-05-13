@@ -16,8 +16,8 @@ import android.os.SystemClock;
 /**
  * A Lada is an implementation of the IRobotCreateInterface, inspired by Vic's
  * awesome API. It is entirely event driven.
- * 
  * @author Erik
+ * Simplified version 140512A by Erik  Super Happy Version
  */
 public class Lada extends IRobotCreateAdapter {
 	private final Dashboard dashboard;
@@ -46,7 +46,6 @@ public class Lada extends IRobotCreateAdapter {
 
 	public void initialize() throws ConnectionLostException {
 		dashboard.log("iAndroid2014 happy version 140509A");
-		driveDirect(-50, 50);
 	}
 
 	/**
