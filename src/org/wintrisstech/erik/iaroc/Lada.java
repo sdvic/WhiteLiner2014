@@ -6,9 +6,9 @@ package org.wintrisstech.erik.iaroc;
  **************************************************************************/
 import ioio.lib.api.IOIO;
 import ioio.lib.api.exception.ConnectionLostException;
-import ioioirobot.ecolban.org.wintrisstech.IRobotCreateAdapter;
-import ioioirobot.ecolban.org.wintrisstech.IRobotCreateInterface;
 
+import org.wintrisstech.irobot.ioio.IRobotCreateAdapter;
+import org.wintrisstech.irobot.ioio.IRobotCreateInterface;
 import org.wintrisstech.sensors.UltraSonicSensors;
 
 import android.os.SystemClock;
