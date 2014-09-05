@@ -2,7 +2,7 @@ package org.wintrisstech.erik.iaroc;
 
 /**************************************************************************
  * WhiteLiner for RoboExpo 2014
- * version 140903B by Vic
+ * version 140904A by Vic
  **************************************************************************/
 import ioio.lib.api.IOIO;
 import ioio.lib.api.exception.ConnectionLostException;
@@ -39,7 +39,6 @@ public class Lada extends IRobotCreateAdapter {
 	public void initialize() throws ConnectionLostException {
 		dashboard.log("WhiteLiner2014 version 140903B");
 		driveDirect(wheelSpeed, wheelSpeed);
-		readSensors(SENSORS_GROUP_ID6); // Reads all sensors
 	}
 
 	public void loop() throws ConnectionLostException {

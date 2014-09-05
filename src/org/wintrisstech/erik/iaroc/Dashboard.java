@@ -1,6 +1,7 @@
 package org.wintrisstech.erik.iaroc;
 /**************************************************************************
  * Simplified version 140512A by Erik  Super Happy Version
+ * Vic's commit version 140904A
  **************************************************************************/
 import ioio.lib.api.IOIO;
 import ioio.lib.api.exception.ConnectionLostException;
