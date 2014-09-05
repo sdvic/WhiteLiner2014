@@ -1,42 +1,34 @@
 package org.wintrisstech.erik.iaroc;
 
 /**************************************************************************
- * Happy version...ultrasonics working...Version 140511A...mods by Vic
- * Added compass class...works..updatged to adt bundle 20140321
+ * WhiteLiner for RoboExpo 2014
+ * version 140903B by Vic
  **************************************************************************/
 import ioio.lib.api.IOIO;
 import ioio.lib.api.exception.ConnectionLostException;
-
 import org.wintrisstech.irobot.ioio.IRobotCreateAdapter;
 import org.wintrisstech.irobot.ioio.IRobotCreateInterface;
 import org.wintrisstech.sensors.UltraSonicSensors;
 
-import android.os.SystemClock;
-
 /**
  * A Lada is an implementation of the IRobotCreateInterface, inspired by Vic's
  * awesome API. It is entirely event driven.
- * @author Erik
- * Simplified version 140512A by Erik  Super Happy Version
+ * @author From the Erik Simplified version 140512A 
  */
 public class Lada extends IRobotCreateAdapter {
 	private final Dashboard dashboard;
 	public UltraSonicSensors sonar;
 	private boolean firstPass = true;;
 	private int commandAzimuth;
+	private int leftSignal;
+	private int rightSignal;
+	private int leftFrontSignal;
+	private int rightFrontSignal;
+	private int wheelSpeed = 50;
+	private int relativeHeading = 0;
+	private int irSensorThreshhold = 1000;
+	public int turnSpan;
 
-	/**
-	 * Constructs a Lada, an amazing machine!
-	 * 
-	 * @param ioio
-	 *            the IOIO instance that the Lada can use to communicate with
-	 *            other peripherals such as sensors
-	 * @param create
-	 *            an implementation of an iRobot
-	 * @param dashboard
-	 *            the Dashboard instance that is connected to the Lada
-	 * @throws ConnectionLostException
-	 */
 	public Lada(IOIO ioio, IRobotCreateInterface create, Dashboard dashboard)
 			throws ConnectionLostException {
 		super(create);
@@ -45,27 +37,104 @@ public class Lada extends IRobotCreateAdapter {
 	}
 
 	public void initialize() throws ConnectionLostException {
-		dashboard.log("iAndroid2014 happy version 140509A");
+		dashboard.log("WhiteLiner2014 version 140903B");
+		driveDirect(wheelSpeed, wheelSpeed);
+		readSensors(SENSORS_GROUP_ID6); // Reads all sensors
 	}
 
-	/**
-	 * This method is called repeatedly
-	 * 
-	 * @throws ConnectionLostException
-	 */
 	public void loop() throws ConnectionLostException {
-		
-		SystemClock.sleep(100);
-		dashboard.log(String.valueOf(readCompass()));
+		driveDirect(wheelSpeed, wheelSpeed);
+		readSensors(SENSORS_GROUP_ID6); // Reads all sensors
+		leftFrontSignal = getCliffFrontLeftSignal();
+		rightFrontSignal = getCliffFrontRightSignal();
+		leftSignal = getCliffLeftSignal();
+		rightSignal = getCliffRightSignal();
+		 dashboard.log(leftFrontSignal + "");//for testing only to calibrate threshhold
+
+		/***************************************************************************************
+		 * Handling left IR sensors.
+		 ***************************************************************************************/
+		if (leftFrontSignal > irSensorThreshhold) // Seeing left front IR
+													// sensor. Too far right.
+		{
+			turnAngle(5); // Turn left 5 degrees.
+		}
+		if (leftSignal > irSensorThreshhold) // Seeing left front IR sensor. Too
+												// far right.
+		{
+			turnAngle(20); // Turn left 20 degrees.
+		}
+
+		/***************************************************************************************
+		 * Handling right IR sensors.
+		 ***************************************************************************************/
+		if (rightFrontSignal > irSensorThreshhold) // Seeing right front IR
+													// sensor. Too far left.
+		{
+			turnAngle(-5);// Turn right 5 degrees.
+		}
+		if (rightSignal > irSensorThreshhold) // Seeing right front IR sensor.
+												// Too far left...turn right.
+		{
+			turnAngle(-20); // Turn right 20 degrees.
+		}
+
+		/***************************************************************************************
+		 * Checking for bumps. Turns right on left bump. Turns left on
+		 * right bump. Back up and turn right for head-on.
+		 ***************************************************************************************/
+		boolean bumpRightSignal = isBumpRight();
+		boolean bumpLeftSignal = isBumpLeft();
+
+		if (bumpRightSignal) {
+			driveDirect(wheelSpeed, 0);// turn left
+		}
+
+		if (bumpLeftSignal && bumpRightSignal) // Front bump.
+		{
+			driveDirect(-wheelSpeed, -wheelSpeed / 2); // Back up.
+			turnAngle(-30); // Turn right 30 degrees.
+			driveDirect(wheelSpeed, wheelSpeed); // Continue forward.
+		}
+
 	}
 
-	public void turn(int commandAngle) throws ConnectionLostException //Doesn't work for turns through 360
+	public void turnAngle(int angleToTurn) throws ConnectionLostException // >0 means left, <0 means right.
+	{
+		if (angleToTurn > 0) {
+			driveDirect(wheelSpeed, 0); // turn left
+			relativeHeading = 0;
+			while (relativeHeading < angleToTurn) {
+				readSensors(SENSORS_GROUP_ID6);
+				relativeHeading += getAngle();
+			}
+		}
+
+		if (angleToTurn < 0) {
+			driveDirect(0, wheelSpeed);// turn right
+			relativeHeading = 0;
+			while (relativeHeading > angleToTurn) {
+				readSensors(SENSORS_GROUP_ID6);
+				relativeHeading += getAngle();
+			}
+		}
+
+		driveDirect(wheelSpeed, wheelSpeed); // Go straight.
+	}
+
+	public void turn(int commandAngle) throws ConnectionLostException // Doesn't
+																		// work
+																		// for
+																		// turns
+																		// through
+																		// 360
 	{
 		int startAzimuth = 0;
 		if (firstPass) {
 			startAzimuth += readCompass();
 			commandAzimuth = (startAzimuth + commandAngle) % 360;
-			dashboard.log("commandaz = " + commandAzimuth + " startaz = " + startAzimuth);
+			dashboard.log("commandaz = " + commandAzimuth + " startaz = "
+					+ startAzimuth);
 			firstPass = false;
 		}
 		int currentAzimuth = readCompass();
