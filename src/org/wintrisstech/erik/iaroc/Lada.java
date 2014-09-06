@@ -2,7 +2,7 @@ package org.wintrisstech.erik.iaroc;
 
 /**************************************************************************
  * WhiteLiner for RoboExpo 2014
- * version 140904A by Vic
+ * version 140906A by Vic added beeps
  **************************************************************************/
 import ioio.lib.api.IOIO;
 import ioio.lib.api.exception.ConnectionLostException;
@@ -26,8 +26,11 @@ public class Lada extends IRobotCreateAdapter {
 	private int rightFrontSignal;
 	private int wheelSpeed = 50;
 	private int relativeHeading = 0;
-	private int irSensorThreshhold = 1000;
+	private int irSensorThreshhold = 2000;
 	public int turnSpan;
+	private int[] beep1 = {72, 15};
+	private int[] beep2 = {80, 15};
+	private int[] beep3 = {65, 15};
 
 	public Lada(IOIO ioio, IRobotCreateInterface create, Dashboard dashboard)
 			throws ConnectionLostException {
@@ -56,11 +59,15 @@ public class Lada extends IRobotCreateAdapter {
 		if (leftFrontSignal > irSensorThreshhold) // Seeing left front IR
 													// sensor. Too far right.
 		{
+			song(1, beep1);
+			playSong(1);
 			turnAngle(5); // Turn left 5 degrees.
 		}
 		if (leftSignal > irSensorThreshhold) // Seeing left front IR sensor. Too
 												// far right.
 		{
+			song(2, beep2);
+			playSong(2);
 			turnAngle(20); // Turn left 20 degrees.
 		}
 
@@ -70,11 +77,15 @@ public class Lada extends IRobotCreateAdapter {
 		if (rightFrontSignal > irSensorThreshhold) // Seeing right front IR
 													// sensor. Too far left.
 		{
+			song(3, beep3);
+			playSong(3);
 			turnAngle(-5);// Turn right 5 degrees.
 		}
 		if (rightSignal > irSensorThreshhold) // Seeing right front IR sensor.
 												// Too far left...turn right.
 		{
+			song(1, beep1);
+			playSong(1);
 			turnAngle(-20); // Turn right 20 degrees.
 		}
 
@@ -86,11 +97,15 @@ public class Lada extends IRobotCreateAdapter {
 		boolean bumpLeftSignal = isBumpLeft();
 
 		if (bumpRightSignal) {
+			song(1, beep1);
+			playSong(1);
 			driveDirect(wheelSpeed, 0);// turn left
 		}
 
 		if (bumpLeftSignal && bumpRightSignal) // Front bump.
 		{
+			song(1, beep1);
+			playSong(1);
 			driveDirect(-wheelSpeed, -wheelSpeed / 2); // Back up.
 			turnAngle(-30); // Turn right 30 degrees.
 			driveDirect(wheelSpeed, wheelSpeed); // Continue forward.
