@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="WhiteLiner2014">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/ioiolibandroid.jar!/" />
+      <root url="jar://$PROJECT_DIR$/ioioirobot.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

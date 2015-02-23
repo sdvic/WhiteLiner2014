@@ -2,6 +2,7 @@ package org.wintrisstech.erik.iaroc;
 /**************************************************************************
  * Simplified version 140512A by Erik  Super Happy Version
  * Vic's commit version 140904A
+ * version 150122A AndroidStudio version
  **************************************************************************/
 import ioio.lib.api.IOIO;
 import ioio.lib.api.exception.ConnectionLostException;
