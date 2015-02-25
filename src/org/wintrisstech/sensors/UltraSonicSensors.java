@@ -2,6 +2,7 @@ package org.wintrisstech.sensors;
 
 /**************************************************************************
  * Simplified version 140512A by Erik  Super Happy Version
+ * version 150225A AndroidStudio version
  **************************************************************************/
 import ioio.lib.api.DigitalOutput;
 import ioio.lib.api.IOIO;
