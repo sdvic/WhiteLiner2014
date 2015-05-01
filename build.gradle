@@ -3,10 +3,10 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.0'
+        classpath 'com.android.tools.build:gradle:1.2.2'
     }
 }
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
@@ -15,8 +15,8 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion '21.0.2'
+    compileSdkVersion 22
+    buildToolsVersion '22.0.1'
 
     sourceSets {
         main {

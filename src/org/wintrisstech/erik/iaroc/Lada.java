@@ -12,6 +12,8 @@ import org.wintrisstech.irobot.ioio.IRobotCreateAdapter;
 import org.wintrisstech.irobot.ioio.IRobotCreateInterface;
 import org.wintrisstech.sensors.UltraSonicSensors;
 
+import java.util.Random;
+
 /**
  * A Lada is an implementation of the IRobotCreateInterface, inspired by Vic's
  * awesome API. It is entirely event driven.
@@ -19,6 +21,7 @@ import org.wintrisstech.sensors.UltraSonicSensors;
  */
 public class Lada extends IRobotCreateAdapter {
 	private final Dashboard dashboard;
+    Random r = new Random();
 	public UltraSonicSensors sonar;
 	private boolean firstPass = true;;
 	private int commandAzimuth;
