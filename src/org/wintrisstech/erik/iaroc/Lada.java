@@ -6,15 +6,12 @@ package org.wintrisstech.erik.iaroc;
  * version 150122A AndroidStudio version
  * version 150225B AndroidStudio version
  * version 150613A Erik lessons
+ * version 160215 Vic simplified version
  **************************************************************************/
 import ioio.lib.api.IOIO;
 import ioio.lib.api.exception.ConnectionLostException;
 import org.wintrisstech.irobot.ioio.IRobotCreateAdapter;
 import org.wintrisstech.irobot.ioio.IRobotCreateInterface;
-import org.wintrisstech.sensors.UltraSonicSensors;
-
-import java.util.Random;
-
 /**
  * A Lada is an implementation of the IRobotCreateInterface, inspired by Vic's
  * awesome API. It is entirely event driven.
@@ -22,10 +19,6 @@ import java.util.Random;
  */
 public class Lada extends IRobotCreateAdapter {
 	private final Dashboard dashboard;
-    Random r = new Random();
-	public UltraSonicSensors sonar;
-	private boolean firstPass = true;;
-	private int commandAzimuth;
 	private int leftSignal;
 	private int rightSignal;
 	private int leftFrontSignal;
@@ -33,7 +26,6 @@ public class Lada extends IRobotCreateAdapter {
 	private int wheelSpeed = 50;
 	private int relativeHeading = 0;
 	private int irSensorThreshhold = 2000;
-	public int turnSpan;
 	private int[] beep1 = {72, 15};
 	private int[] beep2 = {80, 15};
 	private int[] beep3 = {65, 15};
@@ -41,7 +33,6 @@ public class Lada extends IRobotCreateAdapter {
 	public Lada(IOIO ioio, IRobotCreateInterface create, Dashboard dashboard)
 			throws ConnectionLostException {
 		super(create);
-		sonar = new UltraSonicSensors(ioio);
 		this.dashboard = dashboard;
 	}
 
@@ -62,15 +53,13 @@ public class Lada extends IRobotCreateAdapter {
 		/***************************************************************************************
 		 * Handling left IR sensors.
 		 ***************************************************************************************/
-		if (leftFrontSignal > irSensorThreshhold) // Seeing left front IR
-													// sensor. Too far right.
+		if (leftFrontSignal > irSensorThreshhold) // Seeing left front IR sensor. Too far right.
 		{
 			song(1, beep1);
 			playSong(1);
 			turnAngle(5); // Turn left 5 degrees.
 		}
-		if (leftSignal > irSensorThreshhold) // Seeing left front IR sensor. Too
-												// far right.
+		if (leftSignal > irSensorThreshhold) // Seeing left front IR sensor. Too far right.
 		{
 			song(2, beep2);
 			playSong(2);
@@ -80,15 +69,13 @@ public class Lada extends IRobotCreateAdapter {
 		/***************************************************************************************
 		 * Handling right IR sensors.
 		 ***************************************************************************************/
-		if (rightFrontSignal > irSensorThreshhold) // Seeing right front IR
-													// sensor. Too far left.
+		if (rightFrontSignal > irSensorThreshhold) // Seeing right front IR sensor.  Too far left.
 		{
 			song(3, beep3);
 			playSong(3);
 			turnAngle(-5);// Turn right 5 degrees.
 		}
-		if (rightSignal > irSensorThreshhold) // Seeing right front IR sensor.
-												// Too far left...turn right.
+		if (rightSignal > irSensorThreshhold) // Seeing right front IR sensor. Too far left, turn right
 		{
 			song(1, beep1);
 			playSong(1);
@@ -140,33 +127,5 @@ public class Lada extends IRobotCreateAdapter {
 		}
 
 		driveDirect(wheelSpeed, wheelSpeed); // Go straight.
-	}
-
-	public void turn(int commandAngle) throws ConnectionLostException // Doesn't
-																		// work
-																		// for
-																		// turns
-																		// through
-																		// 360
-	{
-		int startAzimuth = 0;
-		if (firstPass) {
-			startAzimuth += readCompass();
-			commandAzimuth = (startAzimuth + commandAngle) % 360;
-			dashboard.log("commandaz = " + commandAzimuth + " startaz = "
-					+ startAzimuth);
-			firstPass = false;
-		}
-		int currentAzimuth = readCompass();
-		dashboard.log("now = " + currentAzimuth);
-		if (currentAzimuth >= commandAzimuth) {
-			driveDirect(0, 0);
-			firstPass = true;
-			dashboard.log("finalaz = " + readCompass());
-		}
-	}
-
-	public int readCompass() {
-		return (int) (dashboard.getAzimuth() + 360) % 360;
 	}
 }

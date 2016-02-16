@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">iAndroid 2015</string>
-    <string name="app_name">iAndroid 2015</string>
-    <string name="wait_ioio">Waiting for  2015 IOIO to connect...</string>
-    <string name="ioio_connected">IOIO connected!</string>
-    <string name="wait_create">Waiting for 2015 Create to connect...</string>
-    <string name="create_connected"> 2015 Create connected!</string>
-    <string name="ioio_disconnected">2015 IOIO disconnected!</string>
+    <string name="hello">2016 iARoC demo</string>
+    <string name="app_name">2016 iARoC demo</string>
+    <string name="wait_ioio">Waiting for 2016 demo to connect to ioio board...</string>
+    <string name="ioio_connected">ioio board connected!</string>
+    <string name="wait_create">Waiting for 2016 demo to connect to iRobot Create...</string>
+    <string name="create_connected">Create connected!</string>
+    <string name="ioio_disconnected">2016 ioio board disconnected!</string>
     <string name="zero">0</string>
 </resources>
