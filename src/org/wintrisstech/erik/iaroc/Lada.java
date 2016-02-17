@@ -37,7 +37,7 @@ public class Lada extends IRobotCreateAdapter {
 	}
 
 	public void initialize() throws ConnectionLostException {
-		dashboard.log("WhiteLiner2014 version 140903B");
+		dashboard.log("Initializing 2016 iARoC demo");
 		driveDirect(wheelSpeed, wheelSpeed);
 	}
 
@@ -48,7 +48,7 @@ public class Lada extends IRobotCreateAdapter {
 		rightFrontSignal = getCliffFrontRightSignal();
 		leftSignal = getCliffLeftSignal();
 		rightSignal = getCliffRightSignal();
-		 dashboard.log(leftFrontSignal + "");//for testing only to calibrate threshhold
+		dashboard.log(leftFrontSignal + "");//for testing only to calibrate threshhold
 
 		/***************************************************************************************
 		 * Handling left IR sensors.
